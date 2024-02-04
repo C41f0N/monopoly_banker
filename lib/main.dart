@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/pages/home.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Game(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

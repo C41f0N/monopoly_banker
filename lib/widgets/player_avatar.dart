@@ -10,7 +10,7 @@ class PlayerAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: 70,
           width: 70,
           child: CircleAvatar(
@@ -26,7 +26,8 @@ class PlayerAvatar extends StatelessWidget {
         Text(
           "${player.accountBalance}\$",
           style: TextStyle(
-              color: player.accountBalance <= 0 ? Colors.red : Colors.white),
+            color: player.accountBalance <= 0 ? Colors.red : Colors.white,
+          ),
         ),
       ],
     );
