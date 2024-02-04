@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:monopoly_banker/class_structure/player.dart';
+import 'package:monopoly_banker/widgets/player_avatar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,7 +19,7 @@ class _HomeState extends State<Home> {
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: ListView(
+        child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * 0.025),
 
@@ -44,29 +46,21 @@ class _HomeState extends State<Home> {
 
             // GridView
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: MediaQuery.of(context).size.height * 0.6,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.1,
                 ),
-                child: GridView.count(
-                  crossAxisSpacing: MediaQuery.of(context).size.width * 0.05,
-                  mainAxisSpacing: 20,
-                  crossAxisCount: 3,
-                  children: const [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                  ],
+                child: GridView.builder(
+                  itemCount: 9,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 210 / 200,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                  ),
+                  itemBuilder: (context, index) =>
+                      PlayerAvatar(player: Player("Player 1", 1000)),
                 ),
               ),
             ),
