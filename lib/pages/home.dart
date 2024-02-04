@@ -63,8 +63,19 @@ class _HomeState extends State<Home> {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                     ),
-                    itemBuilder: (context, index) => PlayerAvatar(
-                      player: value.players[index],
+                    itemBuilder: (context, index) => DragTarget(
+                      builder: (context, candidateItems, rejectedItems) {
+                        return LongPressDraggable(
+                          data: value.players[index],
+                          feedback: const Icon(Icons.monetization_on),
+                          child: PlayerAvatar(
+                            player: value.players[index],
+                          ),
+                        );
+                      },
+                      onAccept: (Player data) {
+                        print(data.accountBalance);
+                      },
                     ),
                   ),
                 ),
