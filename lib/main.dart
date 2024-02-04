@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/pages/home.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+
+  await Hive.openBox("__MONOPOLY_BANKER_DATABASE__");
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => Game(),
