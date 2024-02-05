@@ -63,7 +63,7 @@ class TransactionTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${transaction.fromPlayer} to ${transaction.toPlayer}",
+                    "${transaction.fromPlayer == "__BANK__" ? "BANK" : transaction.fromPlayer} to ${transaction.toPlayer == "__BANK__" ? "BANK" : transaction.toPlayer}",
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

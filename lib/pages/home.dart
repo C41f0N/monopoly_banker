@@ -121,17 +121,36 @@ class _HomeState extends State<Home> {
                       ),
                     ),
 
-                    // Bank
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 44, 44, 44),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      alignment: Alignment.center,
-                      child: const Text("BANK", style: TextStyle(fontSize: 30)),
+                    DragTarget(
+                      builder: (context, candidateItems, rejectedItems) {
+                        return LongPressDraggable(
+                          data: "__BANK__",
+                          feedback: const DragWidget(),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 44, 44, 44),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text("BANK",
+                                style: TextStyle(fontSize: 30)),
+                          ),
+                        );
+                      },
+                      onAccept: (String fromPlayerName) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => MoneyTransferDialogue(
+                            fromPlayer: fromPlayerName,
+                            toPlayer: "__BANK__",
+                          ),
+                        );
+                      },
                     ),
+
+                    // Bank
 
                     // Manage Game
                     Container(

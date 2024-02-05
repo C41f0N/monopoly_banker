@@ -39,11 +39,16 @@ class _MoneyTransferDialogueState extends State<MoneyTransferDialogue> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.fromPlayer, style: const TextStyle(fontSize: 17)),
+                  Text(
+                      widget.fromPlayer == "__BANK__"
+                          ? "BANK"
+                          : widget.fromPlayer,
+                      style: const TextStyle(fontSize: 17)),
                   const SizedBox(width: 10),
                   const Icon(Icons.arrow_right_alt),
                   const SizedBox(width: 10),
-                  Text(widget.toPlayer, style: const TextStyle(fontSize: 17)),
+                  Text(widget.toPlayer == "__BANK__" ? "BANK" : widget.toPlayer,
+                      style: const TextStyle(fontSize: 17)),
                 ],
               ),
               TextField(
