@@ -3,6 +3,7 @@ import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/dialogues/add_game_dialogue.dart';
 import 'package:monopoly_banker/dialogues/money_transfer_dialogue.dart';
 import 'package:monopoly_banker/dialogues/add_player_dialogue.dart';
+import 'package:monopoly_banker/dialogues/transactions_list.dart';
 import 'package:monopoly_banker/widgets/drag_widget.dart';
 import 'package:monopoly_banker/widgets/player_avatar.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: const Text("Monopoly Banker"),
           centerTitle: true,
+          backgroundColor: Colors.transparent,
         ),
         drawer: Drawer(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -90,7 +92,6 @@ class _HomeState extends State<Home> {
         ),
         body: SingleChildScrollView(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.025),
@@ -100,6 +101,11 @@ class _HomeState extends State<Home> {
                   children: [
                     // Transactions
                     GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => TransactionsListDialogue());
+                      },
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.14,
                         width: MediaQuery.of(context).size.width * 0.15,
