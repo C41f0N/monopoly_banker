@@ -6,13 +6,18 @@ import 'package:monopoly_banker/class_structure/transaction.dart';
 class Game extends ChangeNotifier {
   Game() {
     gameName = _myBox.get("__CURRENT_GAME_NAME__");
+    print("gameName $gameName");
 
     if (gameName == null) {
-      List<String> gamesList = _myBox.get("__GAMES_LIST__");
+      List<String>? gamesList = _myBox.get("__GAMES_LIST__");
 
-      if (gamesList.isEmpty) {
+      print("gameList $gamesList");
+
+      if (gamesList == null) {
+        gameName = "First Game";
+        _myBox.put("__CURRENT_GAME_NAME__", gameName);
         setDefaultData();
-        addGame();
+        addGameNameToList();
 
         saveGameToHive();
       } else {
@@ -33,7 +38,6 @@ class Game extends ChangeNotifier {
   List<Transaction> transactions = [];
 
   void setDefaultData() {
-    gameName = "First Game";
     goAmount = 200;
     startingAmount = 500;
 
@@ -41,19 +45,34 @@ class Game extends ChangeNotifier {
     players = [
       Player("Player 1", startingAmount),
       Player("Player 2", startingAmount),
-      Player("Player 3", -startingAmount),
+      Player("Player 3", startingAmount),
     ];
 
     transactions = [];
   }
 
-  void addGame() {
-    List<String> gamesList = _myBox.get("__GAMES_LIST__");
+  void addGameNameToList() {
+    List<String>? gamesList = _myBox.get("__GAMES_LIST__");
 
+    gamesList ??= [];
     gamesList.add(gameName!);
 
     _myBox.put("__GAMES_LIST__", gamesList);
 
+    notifyListeners();
+  }
+
+  void addNewGame(String newGameName) {
+    // Set the game name
+    gameName = newGameName;
+    addGameNameToList();
+
+    switchToGame(newGameName);
+
+    setDefaultData();
+
+    // Save the new game
+    saveGameToHive();
     notifyListeners();
   }
 
@@ -109,34 +128,55 @@ class Game extends ChangeNotifier {
 
   void getGameFromHive() {
     // Get Starting Amount
-    startingAmount = _myBox.get("${gameName}__startingAmount");
 
-    // Get Go Amount
-    goAmount = _myBox.get("${gameName}__goAmount");
+    // If data is null, check if the game name exists in list
+    if (!dataForGameExists(gameName!)) {
+      List<String>? gamesList = _myBox.get("__GAMES_LIST__");
 
-    // Get Players List
-    List<String> playersListString = _myBox.get("${gameName}__players");
-    players = [];
+      // If game name is valid, then create data for a new game
+      // and save it.
+      if (gamesList!.contains(gameName)) {
+        _myBox.put("__CURRENT_GAME_NAME__", gameName);
+        setDefaultData();
+        saveGameToHive();
+      }
+    } else {
+      startingAmount = _myBox.get("${gameName}__startingAmount");
 
-    for (String playerData in playersListString) {
-      String playerName = playerData.split(",")[0];
-      int accountBalance = int.parse(playerData.split(",")[1]);
-      players.add(Player(playerName, accountBalance));
+      // Get Go Amount
+      goAmount = _myBox.get("${gameName}__goAmount");
+
+      // Get Players List
+      List<String> playersListString = _myBox.get("${gameName}__players");
+      players = [];
+
+      for (String playerData in playersListString) {
+        String playerName = playerData.split(",")[0];
+        int accountBalance = int.parse(playerData.split(",")[1]);
+        players.add(Player(playerName, accountBalance));
+      }
+
+      // Get Transactions List
+      List<String> transactionsListString =
+          _myBox.get("${gameName}__transactions");
+
+      transactions = [];
+
+      for (String transactionData in transactionsListString) {
+        String fromPlayer = transactionData.split(",")[0];
+        String toPlayer = transactionData.split(",")[1];
+        int amount = int.parse(transactionData.split(",")[3]);
+
+        transactions.add(Transaction(fromPlayer, toPlayer, amount));
+      }
     }
+  }
 
-    // Get Transactions List
-    List<String> transactionsListString =
-        _myBox.get("${gameName}__transactions");
-
-    transactions = [];
-
-    for (String transactionData in transactionsListString) {
-      String fromPlayer = transactionData.split(",")[0];
-      String toPlayer = transactionData.split(",")[1];
-      int amount = int.parse(transactionData.split(",")[3]);
-
-      transactions.add(Transaction(fromPlayer, toPlayer, amount));
-    }
+  bool dataForGameExists(String gameNameToCheck) {
+    return _myBox.get("${gameName}__startingAmount") != null &&
+        _myBox.get("${gameName}__goAmount") != null &&
+        _myBox.get("${gameName}__players") != null &&
+        _myBox.get("${gameName}__transactions") != null;
   }
 
   void addPlayer(String playerName) {
@@ -197,9 +237,14 @@ class Game extends ChangeNotifier {
   }
 
   void switchToGame(String gameNameToSwitch) {
+    print("Attempting to switch to game");
     if (getGameNamesList().contains(gameNameToSwitch)) {
+      print("Switching game");
       gameName = gameNameToSwitch;
+      _myBox.put("__CURRENT_GAME_NAME__", gameNameToSwitch);
       getGameFromHive();
+    } else {
+      print("Name Doesnt Exist");
     }
   }
 }
