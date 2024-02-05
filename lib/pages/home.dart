@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/class_structure/player.dart';
-import 'package:monopoly_banker/dialogues/add_game.dart';
+import 'package:monopoly_banker/dialogues/add_game_dialogue.dart';
 import 'package:monopoly_banker/dialogues/money_transfer_dialogue.dart';
+import 'package:monopoly_banker/dialogues/add_player_dialogue.dart';
 import 'package:monopoly_banker/widgets/drag_widget.dart';
 import 'package:monopoly_banker/widgets/player_avatar.dart';
 import 'package:provider/provider.dart';
@@ -161,7 +162,10 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            game.addTransaction("Player 1", "Player 2", 241);
+            showDialog(
+              context: context,
+              builder: (context) => AddPlayerDialogue(),
+            );
           },
           child: const Icon(Icons.add),
         ),
