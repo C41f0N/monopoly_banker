@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/class_structure/player.dart';
 import 'package:monopoly_banker/dialogues/add_game.dart';
+import 'package:monopoly_banker/dialogues/money_transfer_dialogue.dart';
+import 'package:monopoly_banker/widgets/drag_widget.dart';
 import 'package:monopoly_banker/widgets/player_avatar.dart';
 import 'package:provider/provider.dart';
 
@@ -133,15 +135,21 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) => DragTarget(
                         builder: (context, candidateItems, rejectedItems) {
                           return LongPressDraggable(
-                            data: game.players[index],
-                            feedback: const Icon(Icons.monetization_on),
+                            data: game.players[index].name,
+                            feedback: const DragWidget(),
                             child: PlayerAvatar(
                               player: game.players[index],
                             ),
                           );
                         },
-                        onAccept: (Player data) {
-                          print(data.accountBalance);
+                        onAccept: (String fromPlayerName) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => MoneyTransferDialogue(
+                              fromPlayer: fromPlayerName,
+                              toPlayer: game.players[index].name,
+                            ),
+                          );
                         },
                       ),
                     ),

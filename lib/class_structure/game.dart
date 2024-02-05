@@ -165,7 +165,7 @@ class Game extends ChangeNotifier {
       for (String transactionData in transactionsListString) {
         String fromPlayer = transactionData.split(",")[0];
         String toPlayer = transactionData.split(",")[1];
-        int amount = int.parse(transactionData.split(",")[3]);
+        int amount = int.parse(transactionData.split(",")[2]);
 
         transactions.add(Transaction(fromPlayer, toPlayer, amount));
       }
