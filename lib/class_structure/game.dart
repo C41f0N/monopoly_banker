@@ -256,4 +256,19 @@ class Game extends ChangeNotifier {
       print("Name Doesnt Exist");
     }
   }
+
+  void resetAllAccounts() {
+    for (Player player in players) {
+      player.accountBalance = startingAmount;
+    }
+
+    saveGameToHive();
+    notifyListeners();
+  }
+
+  void changeStartingAmount(int newAmount) {
+    startingAmount = newAmount;
+    saveGameToHive();
+    notifyListeners();
+  }
 }

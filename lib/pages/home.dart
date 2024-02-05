@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:monopoly_banker/class_structure/game.dart';
 import 'package:monopoly_banker/dialogues/add_game_dialogue.dart';
+import 'package:monopoly_banker/dialogues/manage_game.dart';
 import 'package:monopoly_banker/dialogues/money_transfer_dialogue.dart';
 import 'package:monopoly_banker/dialogues/add_player_dialogue.dart';
 import 'package:monopoly_banker/dialogues/transactions_list.dart';
@@ -153,17 +154,26 @@ class _HomeState extends State<Home> {
                     // Bank
 
                     // Manage Game
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.14,
-                      width: MediaQuery.of(context).size.width * 0.15,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 44, 44, 44),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.settings,
-                        color: Colors.grey[400],
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ManageGameDialogue();
+                            });
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 44, 44, 44),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.settings,
+                          color: Colors.grey[400],
+                        ),
                       ),
                     ),
                   ],
