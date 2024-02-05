@@ -204,11 +204,12 @@ class Game extends ChangeNotifier {
   }
 
   void addTransaction(String fromPlayer, String toPlayer, int amount) {
+    print("adding transaction");
     if ((fromPlayer == "__BANK__" ||
             players
                 .where((element) => element.name == fromPlayer)
                 .isNotEmpty) &&
-        (fromPlayer == "__BANK__" ||
+        (toPlayer == "__BANK__" ||
             players.where((element) => element.name == toPlayer).isNotEmpty)) {
       // subtract money from fromPlayer
       if (fromPlayer != "__BANK__") {

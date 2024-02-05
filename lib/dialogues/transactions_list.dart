@@ -16,6 +16,7 @@ class _TransactionsListDialogueState extends State<TransactionsListDialogue> {
   Widget build(BuildContext context) {
     return Consumer<Game>(builder: ((context, game, child) {
       game.getGameFromHive();
+
       return AlertDialog(
         title: const Text(
           "Transactions",

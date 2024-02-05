@@ -59,7 +59,29 @@ class _HomeState extends State<Home> {
                                 size: 20,
                               ),
                               onPressed: () {
-                                game.removeGame(game.getGameNamesList()[index]);
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text(
+                                        "Are you sure you want to delete game ${game.getGameNamesList()[index]}?"),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          game.removeGame(
+                                              game.getGameNamesList()[index]);
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Yes"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("No"),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               },
                             )
                           : const SizedBox(),
@@ -105,7 +127,8 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         showDialog(
                             context: context,
-                            builder: (context) => TransactionsListDialogue());
+                            builder: (context) =>
+                                const TransactionsListDialogue());
                       },
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.14,
@@ -122,6 +145,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
 
+                    // Bank
                     DragTarget(
                       builder: (context, candidateItems, rejectedItems) {
                         return LongPressDraggable(
@@ -150,8 +174,6 @@ class _HomeState extends State<Home> {
                         );
                       },
                     ),
-
-                    // Bank
 
                     // Manage Game
                     GestureDetector(
