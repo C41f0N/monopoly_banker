@@ -43,12 +43,18 @@ class _AddPlayerDialogueState extends State<AddPlayerDialogue> {
                         nameError = "Name can only be alpha numeric";
                       });
                     } else {
-                      setState(() {
-                        nameError = null;
-                      });
+                      if (game.playerExists(nameController.text)) {
+                        setState(() {
+                          nameError = "Player already exists.";
+                        });
+                      } else {
+                        setState(() {
+                          nameError = null;
+                        });
 
-                      game.addPlayer(nameController.text);
-                      Navigator.of(context).pop();
+                        game.addPlayer(nameController.text);
+                        Navigator.of(context).pop();
+                      }
                     }
                   }
                 },

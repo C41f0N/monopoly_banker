@@ -120,7 +120,7 @@ class Game extends ChangeNotifier {
 
     for (Transaction transaction in transactions) {
       transactionsListString.add(
-          "${transaction.fromPlayer},${transaction.toPlayer},${transaction.amount}");
+          "${transaction.fromPlayer}|${transaction.toPlayer}|${transaction.amount}|${transaction.transactionTime.millisecondsSinceEpoch}");
     }
 
     _myBox.put("${gameName}__transactions", transactionsListString);
@@ -163,11 +163,14 @@ class Game extends ChangeNotifier {
       transactions = [];
 
       for (String transactionData in transactionsListString) {
-        String fromPlayer = transactionData.split(",")[0];
-        String toPlayer = transactionData.split(",")[1];
-        int amount = int.parse(transactionData.split(",")[2]);
+        String fromPlayer = transactionData.split("|")[0];
+        String toPlayer = transactionData.split("|")[1];
+        int amount = int.parse(transactionData.split("|")[2]);
+        DateTime transactionTime = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(transactionData.split("|")[3]));
 
-        transactions.add(Transaction(fromPlayer, toPlayer, amount));
+        transactions
+            .add(Transaction(fromPlayer, toPlayer, amount, transactionTime));
       }
     }
   }
@@ -195,6 +198,11 @@ class Game extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool playerExists(String playerName) {
+    getGameFromHive();
+    return players.indexWhere((player) => player.name == playerName) != -1;
+  }
+
   void addTransaction(String fromPlayer, String toPlayer, int amount) {
     if ((fromPlayer == "__BANK__" ||
             players
@@ -219,7 +227,8 @@ class Game extends ChangeNotifier {
       }
 
       // add transaction object to list
-      transactions.add(Transaction(fromPlayer, toPlayer, amount));
+      transactions
+          .add(Transaction(fromPlayer, toPlayer, amount, DateTime.now()));
 
       saveGameToHive();
       notifyListeners();

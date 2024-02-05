@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:monopoly_banker/class_structure/game.dart';
-import 'package:monopoly_banker/class_structure/player.dart';
 import 'package:monopoly_banker/dialogues/add_game_dialogue.dart';
 import 'package:monopoly_banker/dialogues/money_transfer_dialogue.dart';
 import 'package:monopoly_banker/dialogues/add_player_dialogue.dart';
@@ -96,21 +95,53 @@ class _HomeState extends State<Home> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.025),
 
-                // Bank
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.05,
-                  ),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 44, 44, 44),
-                      borderRadius: BorderRadius.circular(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Transactions
+                    GestureDetector(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 44, 44, 44),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.history,
+                          color: Colors.grey[400],
+                        ),
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: const Text("BANK", style: TextStyle(fontSize: 30)),
-                  ),
+
+                    // Bank
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 44, 44, 44),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text("BANK", style: TextStyle(fontSize: 30)),
+                    ),
+
+                    // Manage Game
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.14,
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 44, 44, 44),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.settings,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
                 ),
 
                 SizedBox(
@@ -162,10 +193,27 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AddPlayerDialogue(),
-            );
+            if (game.players.length >= 6) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Maximum number or players reached!"),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Got it."),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) => const AddPlayerDialogue(),
+              );
+            }
           },
           child: const Icon(Icons.add),
         ),
