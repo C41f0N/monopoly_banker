@@ -164,11 +164,11 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       },
-                      onAccept: (String fromPlayerName) {
+                      onAcceptWithDetails: (dragTargetDetails) {
                         showDialog(
                           context: context,
                           builder: (context) => MoneyTransferDialogue(
-                            fromPlayer: fromPlayerName,
+                            fromPlayer: dragTargetDetails.data.toString(),
                             toPlayer: "__BANK__",
                           ),
                         );
@@ -231,11 +231,11 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        onAccept: (String fromPlayerName) {
+                        onAcceptWithDetails: (dragTargetDetails) {
                           showDialog(
                             context: context,
                             builder: (context) => MoneyTransferDialogue(
-                              fromPlayer: fromPlayerName,
+                              fromPlayer: dragTargetDetails.data.toString(),
                               toPlayer: game.players[index].name,
                             ),
                           );
