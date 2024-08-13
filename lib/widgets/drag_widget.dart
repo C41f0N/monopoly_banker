@@ -5,6 +5,12 @@ class DragWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(child: Text("💵"));
+    return Text(
+      "💵",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        decoration: TextDecoration.none,
+      ),
+    );
   }
 }
