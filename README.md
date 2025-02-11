@@ -5,7 +5,7 @@ Just a simple monopoly banker app without any ads.
 
 <br>
 
-## Screenshots
+# Screenshots
 
 <img src="https://github.com/user-attachments/assets/d7afc977-c7fb-42b0-9a68-79b92570b9b4" height=500>
 <img src="https://github.com/user-attachments/assets/4a01cbc8-d10d-4711-a57b-45a31b858262" height=500>
